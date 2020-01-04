@@ -574,26 +574,6 @@ namespace c_sharp_playground.Models
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.etis.fskab.se/v1.0/ETISws")]
-    public enum RealTimeAffect
-    {
-
-        /// <remarks/>
-        CRITICAL,
-
-        /// <remarks/>
-        NON_CRITICAL,
-
-        /// <remarks/>
-        PASSED,
-
-        /// <remarks/>
-        NONE,
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.etis.fskab.se/v1.0/ETISws")]
@@ -819,26 +799,6 @@ namespace c_sharp_playground.Models
                 this.toDateTimeField = value;
             }
         }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.etis.fskab.se/v1.0/ETISws")]
-    public enum ScopeAttributeType
-    {
-
-        /// <remarks/>
-        CONCERNS_DEPARTURE,
-
-        /// <remarks/>
-        CONCERNS_ARRIVAL,
-
-        /// <remarks/>
-        CONCERNS_LINE,
-
-        /// <remarks/>
-        CONCERNS_DEPARR,
     }
 
     /// <remarks/>

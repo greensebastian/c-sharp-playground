@@ -17,6 +17,20 @@ namespace c_sharp_playground.Controllers
         }
 
         [HttpGet]
+        public ActionResult QueryJournies([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
+        {
+            try
+            {
+                var service = new GetJourneyService();
+                return Ok(service.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet]
         public ActionResult Querystation([FromQuery] string station)
         {
             try
@@ -37,6 +51,20 @@ namespace c_sharp_playground.Controllers
             {
                 var service = new StationresultsService();
                 return Ok(service.GetStationDetails(stationId, dateTime ?? DateTime.Now, direction).Result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MeansOfTransport()
+        {
+            try
+            {
+                var service = new GetMeansOfTransportService();
+                return Ok(service.GetMeansOfTransport().Result);
             }
             catch (Exception ex)
             {

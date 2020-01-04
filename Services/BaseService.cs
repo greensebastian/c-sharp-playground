@@ -16,7 +16,7 @@ namespace c_sharp_playground.Services
             Hostname = hostname;
         }
 
-        protected async Task<HttpResponseMessage> GetResponse(Dictionary<string, string> queryParameters = null)
+        protected async Task<HttpResponseMessage> GetResponse(Dictionary<string, string> queryParameters = null, List<string> escapedChars = null)
         {
             string url = Hostname;
 
@@ -25,9 +25,19 @@ namespace c_sharp_playground.Services
                 var parameters = new List<string>();
                 foreach (var item in queryParameters)
                 {
-                    parameters.Add(HttpUtility.UrlEncode(item.Key) + "=" + HttpUtility.UrlEncode(item.Value));
+                    parameters.Add(HttpUtility.UrlPathEncode(item.Key) + "=" + HttpUtility.UrlPathEncode(item.Value));
                 }
                 url += "?" + string.Join('&', parameters);
+
+                // Undo escape on certain characters
+                if (escapedChars != null && escapedChars.Count > 0)
+                {
+                    foreach (var escapedChar in escapedChars)
+                    {
+                        url = url.Replace(HttpUtility.UrlPathEncode(escapedChar), escapedChar);
+                    }
+                }
+
             }
             using (var client = new HttpClient())
             {
