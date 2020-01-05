@@ -37,7 +37,6 @@ namespace c_sharp_playground.Services
                         url = url.Replace(HttpUtility.UrlPathEncode(escapedChar), escapedChar);
                     }
                 }
-
             }
             using (var client = new HttpClient())
             {

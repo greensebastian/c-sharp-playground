@@ -1,7 +1,7 @@
-﻿using c_sharp_playground.Services;
+﻿using System;
+using c_sharp_playground.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace c_sharp_playground.Controllers
 {
