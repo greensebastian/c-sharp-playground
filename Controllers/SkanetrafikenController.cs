@@ -55,11 +55,11 @@ namespace c_sharp_playground.Controllers
 
 
         [HttpGet]
-        public ActionResult QueryJournies([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
+        public async Task<ActionResult> QueryJournies([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
         {
             try
             {
-                var response = JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result;
+                var response = await JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -69,11 +69,11 @@ namespace c_sharp_playground.Controllers
         }
 
         [HttpGet]
-        public ActionResult Querystation([FromQuery] string station)
+        public async Task<ActionResult> Querystation([FromQuery] string station)
         {
             try
             {
-                var response = QueryStationService.SearchForStation(station).Result;
+                var response = await QueryStationService.SearchForStation(station);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -83,11 +83,11 @@ namespace c_sharp_playground.Controllers
         }
 
         [HttpGet]
-        public ActionResult Stationresults([FromQuery] int stationId, [FromQuery] DateTime? dateTime = null, [FromQuery] Direction direction = Direction.Both)
+        public async Task<ActionResult> Stationresults([FromQuery] int stationId, [FromQuery] DateTime? dateTime = null, [FromQuery] Direction direction = Direction.Both)
         {
             try
             {
-                var response = StationResultsService.GetStationDetails(stationId, dateTime ?? DateTime.Now, direction).Result;
+                var response = await StationResultsService.GetStationDetails(stationId, dateTime ?? DateTime.Now, direction);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -97,11 +97,11 @@ namespace c_sharp_playground.Controllers
         }
 
         [HttpGet]
-        public ActionResult MeansOfTransport()
+        public async Task<ActionResult> MeansOfTransport()
         {
             try
             {
-                var response = MeansOfTransportService.GetMeansOfTransport().Result;
+                var response = await MeansOfTransportService.GetMeansOfTransport();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -111,18 +111,18 @@ namespace c_sharp_playground.Controllers
         }
 
         [HttpGet]
-        public ActionResult TrainDelays([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
+        public async Task<ActionResult> TrainDelays([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
         {
             try
             {
-                var meansOfTransportServiceResult = MeansOfTransportService.GetMeansOfTransport().Result;
+                var meansOfTransportServiceResult = await MeansOfTransportService.GetMeansOfTransport();
                 var searchWords = new string[]
                 {
                     "Tåg", "Buss, kommersiell"
                 };
                 // Sum all line type ids where the line name exists in search words
                 lineTypeSum = meansOfTransportServiceResult.TransportModes.Where(line => searchWords.Any(word => line.Name.Contains(word, StringComparison.InvariantCultureIgnoreCase))).Sum(line => line.Id);
-                var journeyServiceResult = JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result;
+                var journeyServiceResult = await JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum);
                 
                 if (journeyServiceResult == null)
                 {
