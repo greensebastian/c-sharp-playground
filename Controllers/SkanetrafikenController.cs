@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using c_sharp_playground.Logic;
 using c_sharp_playground.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,13 +20,47 @@ namespace c_sharp_playground.Controllers
             _logger = logger;
         }
 
+        private GetJourneyService JourneyService
+        {
+            get
+            {
+                return new GetJourneyService();
+            }
+        }
+
+        private QuerystationService QueryStationService
+        {
+            get
+            {
+                return new QuerystationService();
+            }
+        }
+
+        private StationresultsService StationResultsService
+        {
+            get
+            {
+                return new StationresultsService();
+            }
+        }
+
+        private GetMeansOfTransportService MeansOfTransportService
+        {
+            get
+            {
+                return new GetMeansOfTransportService();
+            }
+        }
+
+
+
         [HttpGet]
         public ActionResult QueryJournies([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
         {
             try
             {
-                var service = new GetJourneyService();
-                return Ok(service.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result);
+                var response = JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result;
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -35,8 +73,8 @@ namespace c_sharp_playground.Controllers
         {
             try
             {
-                var service = new QuerystationService();
-                return Ok(service.SearchForStation(station).Result);
+                var response = QueryStationService.SearchForStation(station).Result;
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -49,8 +87,8 @@ namespace c_sharp_playground.Controllers
         {
             try
             {
-                var service = new StationresultsService();
-                return Ok(service.GetStationDetails(stationId, dateTime ?? DateTime.Now, direction).Result);
+                var response = StationResultsService.GetStationDetails(stationId, dateTime ?? DateTime.Now, direction).Result;
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -63,8 +101,37 @@ namespace c_sharp_playground.Controllers
         {
             try
             {
-                var service = new GetMeansOfTransportService();
-                return Ok(service.GetMeansOfTransport().Result);
+                var response = MeansOfTransportService.GetMeansOfTransport().Result;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult TrainDelays([FromQuery] string startPoint, [FromQuery] string endPoint, [FromQuery] DateTime? dateTime = null, [FromQuery] int numberResults = 5, [FromQuery] int lineTypeSum = 2047)
+        {
+            try
+            {
+                var meansOfTransportServiceResult = MeansOfTransportService.GetMeansOfTransport().Result;
+                var searchWords = new string[]
+                {
+                    "Tåg", "Buss, kommersiell"
+                };
+                // Sum all line type ids where the line name exists in search words
+                lineTypeSum = meansOfTransportServiceResult.TransportModes.Where(line => searchWords.Any(word => line.Name.Contains(word, StringComparison.InvariantCultureIgnoreCase))).Sum(line => line.Id);
+                var journeyServiceResult = JourneyService.SearchForJourney(startPoint, endPoint, dateTime ?? DateTime.Now, numberResults, lineTypeSum).Result;
+                
+                if (journeyServiceResult == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NoContent, "No response from Skånetrafiken for specified request");
+                }
+
+                var response = SkanetrafikenLogic.GetDelaysResponse(journeyServiceResult, meansOfTransportServiceResult);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

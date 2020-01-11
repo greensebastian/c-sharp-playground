@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using c_sharp_playground.Helpers;
 using c_sharp_playground.Models;
 
 namespace c_sharp_playground.Services
@@ -46,7 +47,7 @@ namespace c_sharp_playground.Services
             var response = await GetResponse(queryParameters, escapedChars);
             var responseContent = await response.Content.ReadAsStringAsync();
             responseContent = ExtractContent<GetJourneyResult>(responseContent);
-            return Deserialize<GetJourneyResult>(responseContent);
+            return XmlHelper.Deserialize<GetJourneyResult>(responseContent);
         }
 
         private string BuildPointParameter(Point point)

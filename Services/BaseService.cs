@@ -46,30 +46,6 @@ namespace c_sharp_playground.Services
             }
         }
 
-        protected string Serialize<T>(T input) where T : new()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-
-            using (var stringWriter = new StringWriter())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter))
-                {
-                    serializer.Serialize(xmlWriter, input);
-                    return stringWriter.ToString();
-                }
-            }
-        }
-
-        protected T Deserialize<T>(string input) where T : new()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-
-            using (var stringReader = new StringReader(input))
-            {
-                return (T)serializer.Deserialize(stringReader);
-            }
-        }
-
         protected static string ExtractContent<T>(string input)
         {
             var contentTag = typeof(T).Name.ToString();
