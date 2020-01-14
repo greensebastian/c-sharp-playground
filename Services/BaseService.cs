@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace c_sharp_playground.Services
 {

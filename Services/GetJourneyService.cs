@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using c_sharp_playground.Helpers;
-using c_sharp_playground.Models;
+using c_sharp_playground.Models.Skanetrafiken;
 
 namespace c_sharp_playground.Services
 {

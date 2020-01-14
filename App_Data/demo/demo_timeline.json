@@ -1,0 +1,158 @@
+{
+  "timelineObjects" : [ {
+    "placeVisit" : {
+      "location" : {
+        "latitudeE7" : 557119483,
+        "longitudeE7" : 132034930,
+        "placeId" : "ChIJY-886c6XU0YRipSzBG2DNo8",
+        "address" : "Lund\nSverige",
+        "name" : "Lund University",
+        "sourceInfo" : {
+          "deviceTag" : -1673026067
+        }
+      },
+      "duration" : {
+        "startTimestampMs" : "1543669119026",
+        "endTimestampMs" : "1543689547590"
+      },
+      "placeConfidence" : "MEDIUM_CONFIDENCE",
+      "childVisits" : [ {
+        "location" : {
+          "latitudeE7" : 557094274,
+          "longitudeE7" : 132097781,
+          "placeId" : "ChIJ5_768smXU0YR3r6r2jCS2ik",
+          "address" : "Ole Römers väg 1\n223 63 Lund\nSverige",
+          "name" : "Maskintekniksektionen inom TLTH",
+          "sourceInfo" : {
+            "deviceTag" : -1673026067
+          }
+        },
+        "duration" : {
+          "startTimestampMs" : "1543669119026",
+          "endTimestampMs" : "1543689547590"
+        },
+        "placeConfidence" : "MEDIUM_CONFIDENCE",
+        "centerLatE7" : 557091798,
+        "centerLngE7" : 132105573
+      } ],
+      "centerLatE7" : 557091798,
+      "centerLngE7" : 132105573
+    }
+  }, {
+    "placeVisit" : {
+      "location" : {
+        "latitudeE7" : 557093856,
+        "longitudeE7" : 132106028,
+        "placeId" : "ChIJga0S8cmXU0YRVAUsqWnKvX0",
+        "address" : "Ole Römers väg 1\n223 63 Lund\nSverige",
+        "name" : "Ole Römers väg 1",
+        "semanticType" : "TYPE_WORK",
+        "sourceInfo" : {
+          "deviceTag" : -1673026067
+        }
+      },
+      "duration" : {
+        "startTimestampMs" : "1543752703195",
+        "endTimestampMs" : "1543779805437"
+      },
+      "placeConfidence" : "HIGH_CONFIDENCE",
+      "centerLatE7" : 557091779,
+      "centerLngE7" : 132105398
+    }
+  }, {
+    "placeVisit" : {
+      "location" : {
+        "latitudeE7" : 557119483,
+        "longitudeE7" : 132034930,
+        "placeId" : "ChIJY-886c6XU0YRipSzBG2DNo8",
+        "address" : "Lund\nSverige",
+        "name" : "Lund University",
+        "sourceInfo" : {
+          "deviceTag" : -1673026067
+        }
+      },
+      "duration" : {
+        "startTimestampMs" : "1543836380606",
+        "endTimestampMs" : "1543842572843"
+      },
+      "placeConfidence" : "HIGH_CONFIDENCE",
+      "childVisits" : [ {
+        "location" : {
+          "latitudeE7" : 557094274,
+          "longitudeE7" : 132097781,
+          "placeId" : "ChIJ5_768smXU0YR3r6r2jCS2ik",
+          "address" : "Ole Römers väg 1\n223 63 Lund\nSverige",
+          "name" : "Maskintekniksektionen inom TLTH",
+          "sourceInfo" : {
+            "deviceTag" : -1673026067
+          }
+        },
+        "duration" : {
+          "startTimestampMs" : "1543836380606",
+          "endTimestampMs" : "1543838949285"
+        },
+        "placeConfidence" : "MEDIUM_CONFIDENCE",
+        "centerLatE7" : 557091682,
+        "centerLngE7" : 132099076
+      }, {
+        "location" : {
+          "latitudeE7" : 557147081,
+          "longitudeE7" : 132127024,
+          "placeId" : "ChIJyyBIt8qXU0YRDZ1YbOXGgQ4",
+          "address" : "Sölvegatan 26\n223 62 Lund\nSverige",
+          "name" : "Ingvar Kamprad Designcentrum",
+          "sourceInfo" : {
+            "deviceTag" : -1673026067
+          }
+        },
+        "duration" : {
+          "startTimestampMs" : "1543839562107",
+          "endTimestampMs" : "1543840521087"
+        },
+        "placeConfidence" : "HIGH_CONFIDENCE",
+        "centerLatE7" : 557148880,
+        "centerLngE7" : 132125420
+      }, {
+        "location" : {
+          "latitudeE7" : 557094274,
+          "longitudeE7" : 132097781,
+          "placeId" : "ChIJ5_768smXU0YR3r6r2jCS2ik",
+          "address" : "Ole Römers väg 1\n223 63 Lund\nSverige",
+          "name" : "Maskintekniksektionen inom TLTH",
+          "sourceInfo" : {
+            "deviceTag" : -1673026067
+          }
+        },
+        "duration" : {
+          "startTimestampMs" : "1543841608762",
+          "endTimestampMs" : "1543842572843"
+        },
+        "placeConfidence" : "LOW_CONFIDENCE",
+        "centerLatE7" : 557091809,
+        "centerLngE7" : 132099136
+      } ],
+      "centerLatE7" : 557100391,
+      "centerLngE7" : 132103087
+    }
+  }, {
+    "placeVisit" : {
+      "location" : {
+        "latitudeE7" : 557108190,
+        "longitudeE7" : 131727330,
+        "placeId" : "ChIJPasv8Xy9U0YRVSUDqSVz5Gw",
+        "address" : "Åldermansgatan 11\n227 64 Lund\nSverige",
+        "name" : "Folkes biluthyrning",
+        "sourceInfo" : {
+          "deviceTag" : -1673026067
+        }
+      },
+      "duration" : {
+        "startTimestampMs" : "1544090956797",
+        "endTimestampMs" : "1544091533000"
+      },
+      "placeConfidence" : "HIGH_CONFIDENCE",
+      "centerLatE7" : 557110810,
+      "centerLngE7" : 131727257
+    }
+  } ]
+}

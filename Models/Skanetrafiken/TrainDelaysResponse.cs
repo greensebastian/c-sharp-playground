@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace c_sharp_playground.Models
+namespace c_sharp_playground.Models.Skanetrafiken
 {
     public class TrainDelaysResponse
     {

@@ -5,6 +5,7 @@ import { Test } from './components/Test';
 import { Home } from './components/Home';
 import { StationInfo } from './components/StationInfo';
 import { DelayStatus } from './components/DelayStatus';
+import { Timeline } from './components/Timeline';
 
 import './custom.css'
 
@@ -16,6 +17,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/delay' component={DelayStatus} />
+        <Route path='/timeline' component={Timeline} />
         <Route path='/station' component={StationInfo} />
         <Route path='/test' component={Test} />
       </Layout>

@@ -1,4 +1,4 @@
-﻿namespace c_sharp_playground.Models
+﻿namespace c_sharp_playground.Models.Skanetrafiken
 {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
