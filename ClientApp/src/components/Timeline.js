@@ -27,11 +27,11 @@ export class Timeline extends Component {
           <b>/Location History/Semantic History Location/<i>year</i>/<i>year-month</i>.json</b>
         </p>
         <div>
-          <label>Select your file:</label><br />
+          <label>Select your file (or include the demo file):</label><br />
           <input type="file" className="mb-2" name="files" accept="*.json" onChange={this.onSelectedFileChange} /><br />
           <button type="button" className="mb-2" onClick={this.onClickUpload} disabled={!this.state.selectedFile && !this.state.showDemo}>Upload</button><br />
           <div className="d-flex flex-row align-items-center mb-2">
-            <input type="checkbox" className="mr-2" name="showDemo" onChange={this.onClickDemoUpload} />Include demo file
+            <input id="use-demo" type="checkbox" className="mr-2" name="showDemo" onChange={this.onClickDemoUpload} /><label for="use-demo" className="m-0 p-0">Include demo file</label>
           </div>
         </div>
         {this.contentSection()}
