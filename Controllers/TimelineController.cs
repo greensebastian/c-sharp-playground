@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
-using c_sharp_playground.Logic;
+using c_sharp_playground.Logic.Timeline;
 using c_sharp_playground.Helpers;
 
 namespace c_sharp_playground.Controllers
@@ -44,7 +44,9 @@ namespace c_sharp_playground.Controllers
                     }
                 }
 
-                var results = new { fileCount = files.Count, size, resultCount = timelineObjects.Count, results = timelineObjects };
+                var processedResults = TimelineLogic.CreateResponseContent(timelineObjects);
+
+                var results = new { fileCount = files.Count, size, resultCount = timelineObjects.Count, results = timelineObjects, processedResults };
 
                 return Ok(results);
             }
