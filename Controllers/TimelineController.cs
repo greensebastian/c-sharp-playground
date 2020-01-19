@@ -46,7 +46,7 @@ namespace c_sharp_playground.Controllers
 
                 var processedResults = TimelineLogic.CreateResponseContent(timelineObjects);
 
-                var results = new { fileCount = files.Count, size, resultCount = timelineObjects.Count, results = timelineObjects, processedResults };
+                var results = new { fileCount = files.Count, size, resultCount = timelineObjects.Count, processedResults };
 
                 return Ok(results);
             }

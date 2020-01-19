@@ -72,11 +72,11 @@ namespace c_sharp_playground.Logic.Timeline
         private static object Process(IEnumerable<Activitysegment> activitySegmentSet)
         {
             // Means of travel by distance
-            IValueSortedSet distanceDistribution = new ValueSortedSet();
+            var distanceDistribution = new ValueSortedSet("m");
             // Means of travel by trip count
-            IValueSortedSet countDistribution = new ValueSortedSet();
+            var countDistribution = new ValueSortedSet("times");
             // Means of travel by time spent
-            IValueSortedSet timeDistribution = new ValueSortedSet();
+            var timeDistribution = new ValueSortedSet("ms");
 
             foreach (var activitySegment in activitySegmentSet)
             {
@@ -85,7 +85,7 @@ namespace c_sharp_playground.Logic.Timeline
                 timeDistribution.Put(activitySegment.activityType, (int)(activitySegment.duration.endTimestampMs - activitySegment.duration.startTimestampMs));
             }
 
-            var results = new Dictionary<string, IValueSortedSet>();
+            var results = new Dictionary<string, ValueSortedSet>();
             results.Add("Distance", distanceDistribution);
             results.Add("Count", countDistribution);
             results.Add("Time", timeDistribution);
@@ -106,9 +106,9 @@ namespace c_sharp_playground.Logic.Timeline
         private static object Process(IEnumerable<Placevisit> placeVisitSet)
         {
             // Means of travel by trip count
-            IValueSortedSet countDistribution = new ValueSortedSet();
+            var countDistribution = new ValueSortedSet("times");
             // Means of travel by time spent
-            IValueSortedSet timeDistribution = new ValueSortedSet();
+            var timeDistribution = new ValueSortedSet("ms");
 
             string key;
             string name;
@@ -117,10 +117,10 @@ namespace c_sharp_playground.Logic.Timeline
                 key = placeVisit.location.placeId;
                 name = placeVisit.location.name;
                 countDistribution.Put(key, 1, name);
-                timeDistribution.Put(key, (int)(placeVisit.duration.endTimestampMs - placeVisit.duration.startTimestampMs), name);
+                timeDistribution.Put(key, (ulong)(placeVisit.duration.endTimestampMs - placeVisit.duration.startTimestampMs), name);
             }
 
-            var results = new Dictionary<string, IValueSortedSet>();
+            var results = new Dictionary<string, ValueSortedSet>();
             results.Add("Count", countDistribution);
             results.Add("Time", timeDistribution);
 

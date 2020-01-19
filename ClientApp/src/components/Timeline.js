@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { PATHS } from '../resources/Constants';
+import { COLORS } from '../resources/Colors';
+import { BarDistribution } from './BarDistribution/BarDistribution';
 
 export class Timeline extends Component {
   static displayName = Timeline.name;
@@ -21,7 +23,8 @@ export class Timeline extends Component {
       <div>
         <h1 id="tabelLabel">Google maps timeline visualization</h1>
         <p>
-          This page analyzes and shows information about the google maps timeline data you provide. Data is provided through visiting <a href="https://takeout.google.com/settings/takeout/custom/location_history" target="_blank" rel="noopener noreferrer">takeout.google.com</a> and retrieving a JSON dump of your timeline data. Unpack the location history and select a Semantic Location History file from <nobr><b>/Location History/Semantic History Location/<i>year</i>/<i>year-month</i>.json</b></nobr>
+          This page analyzes and shows information about the google maps timeline data you provide. Data is provided through visiting <a href="https://takeout.google.com/settings/takeout/custom/location_history" target="_blank" rel="noopener noreferrer">takeout.google.com</a> and retrieving a JSON dump of your timeline data. Unpack the location history and select a Semantic Location History file from:<br/>
+          <b>/Location History/Semantic History Location/<i>year</i>/<i>year-month</i>.json</b>
         </p>
         <div>
           <label>Select your file:</label><br />
@@ -41,10 +44,58 @@ export class Timeline extends Component {
       return <p>Something went wrong...</p>
     }
     else if (this.state.processedData !== null) {
-      return (
+      /*return (
         <div>
           <p>Found {this.state.processedData.resultCount.toString()} timeline records, {this.state.processedData.results.filter(this.isPlaceVisit).length.toString()} of which are place visits!</p>
           {this.renderVisits(this.state.processedData.results)}
+        </div>
+      );*/
+
+      let activitiesByDistance = this.state.processedData.processedResults.activitySegmentResults.Distance;
+      let activitiesByDistanceFormatting = BarDistribution.metersToKilometers;
+
+      let activitiesByTime = this.state.processedData.processedResults.activitySegmentResults.Time;
+      let activitiesByTimeFormatting = BarDistribution.millisecondsToMinutes;
+
+      let placesByTime = this.state.processedData.processedResults.placeVisitResults.Time;
+      let placesByTimeFormatting = BarDistribution.millisecondsToMinutes;
+
+      let placesByCount = this.state.processedData.processedResults.placeVisitResults.Count;
+      let placesByCountFormatting = BarDistribution.flat;
+      return (
+        <div>
+          <BarDistribution
+            data={activitiesByDistance.dataSet}
+            title={"Travel methods by distance"}
+            lineColor={COLORS.SECONDARY}
+            totalCountText={"Total distance: " + activitiesByDistanceFormatting(activitiesByDistance.totalCount)}
+            unitFormat={activitiesByDistanceFormatting}
+            limit={5}
+          />
+          <BarDistribution
+            data={activitiesByTime.dataSet}
+            title={"Travel methods by time"}
+            lineColor={COLORS.SECONDARY}
+            totalCountText={"Total time: " + activitiesByTimeFormatting(activitiesByTime.totalCount)}
+            unitFormat={activitiesByTimeFormatting}
+            limit={5}
+          />
+          <BarDistribution
+            data={placesByTime.dataSet}
+            title={"Places visited by time"}
+            lineColor={COLORS.SECONDARY}
+            totalCountText={"Total time: " + placesByTimeFormatting(placesByTime.totalCount)}
+            unitFormat={placesByTimeFormatting}
+            limit={10}
+          />
+          <BarDistribution
+            data={placesByCount.dataSet}
+            title={"Places visited by count"}
+            lineColor={COLORS.SECONDARY}
+            totalCountText={"Total number of visits: " + placesByCountFormatting(placesByCount.totalCount)}
+            unitFormat={placesByCountFormatting}
+            limit={10}
+          />
         </div>
       );
     }
