@@ -7,11 +7,22 @@ code {
   color: #E01A76;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.nowrap {
+  white-space: nowrap;
 }
+
+#dropdown-basic-button {
+  color: #fff;
+  background-color: #ff5252;
+  border-color: #b33939;
+}
+
+  #dropdown-basic-button:focus {
+    color: #fff;
+    background-color: #ff5252;
+    border-color: #b33939;
+    box-shadow: 1px 1px 4px 0.1rem #aaaaaa;
+  }
 
 /*
     Color reference:

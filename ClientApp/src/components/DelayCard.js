@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Colors from '../resources/Colors';
-import { MdTrain, MdDirectionsBus, MdAccessTime, MdCancel } from 'react-icons/md';
+import { MdDirectionsBus, MdAccessTime, MdCancel } from 'react-icons/md';
 
 export class DelayCard extends Component {
   static displayName = DelayCard.name;

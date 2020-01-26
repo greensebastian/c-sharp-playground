@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using c_sharp_playground.Extensions;
 using c_sharp_playground.Models.Timeline;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -80,9 +81,10 @@ namespace c_sharp_playground.Logic.Timeline
 
             foreach (var activitySegment in activitySegmentSet)
             {
-                distanceDistribution.Put(activitySegment.activityType, activitySegment.distance);
-                countDistribution.Put(activitySegment.activityType, 1);
-                timeDistribution.Put(activitySegment.activityType, (int)(activitySegment.duration.endTimestampMs - activitySegment.duration.startTimestampMs));
+                var name = activitySegment.activityType.WithoutUnderscores().InTitleCase(true);
+                distanceDistribution.Put(activitySegment.activityType, activitySegment.distance, name);
+                countDistribution.Put(activitySegment.activityType, 1, name);
+                timeDistribution.Put(activitySegment.activityType, (int)(activitySegment.duration.endTimestampMs - activitySegment.duration.startTimestampMs), name);
             }
 
             var results = new Dictionary<string, ValueSortedSet>();
