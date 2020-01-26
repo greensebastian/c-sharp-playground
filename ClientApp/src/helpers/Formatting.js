@@ -21,7 +21,7 @@ export class Formatting {
   }
 
   static flat(unit) {
-    return unit + " times";
+    return unit.toString();
   }
 
   // Kinda ugly but useful and simple

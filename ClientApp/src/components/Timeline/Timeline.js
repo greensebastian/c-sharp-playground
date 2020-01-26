@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { PATHS } from '../../resources/Constants';
 import { Distribution } from './Distribution';
+import { Overview } from './Overview';
 
 export class Timeline extends Component {
   static displayName = Timeline.name;
 
   static VIEWS = {
-    DISTRIBUTION: "Distribution"
+    DISTRIBUTION: "Distribution",
+    OVERVIEW: "Overview"
   };
 
   constructor(props) {
@@ -48,11 +50,15 @@ export class Timeline extends Component {
 
   dropdown() {
     return this.state.processedData ? (
-      <Dropdown>
-        <DropdownButton id="dropdown-basic-button" title={this.state.view}>
-          <Dropdown.Item onClick={() => this.setView(Timeline.VIEWS.DISTRIBUTION)}>{Timeline.VIEWS.DISTRIBUTION}</Dropdown.Item>
-        </DropdownButton>
-      </Dropdown>
+      <div>
+        <Dropdown>
+          <DropdownButton id="dropdown-basic-button" title={this.state.view}>
+            <Dropdown.Item onClick={() => this.setView(Timeline.VIEWS.DISTRIBUTION)}>{Timeline.VIEWS.DISTRIBUTION}</Dropdown.Item>
+            <Dropdown.Item onClick={() => this.setView(Timeline.VIEWS.OVERVIEW)}>{Timeline.VIEWS.OVERVIEW}</Dropdown.Item>
+          </DropdownButton>
+        </Dropdown>
+        <p>Explore different visualizations by changing the dropdown selection.</p>
+      </div>
     ) : null
   }
 
@@ -65,7 +71,8 @@ export class Timeline extends Component {
       return <p>Something went wrong...</p>
     }
     else if (this.state.processedData) {
-      return (this.state.view === Timeline.VIEWS.DISTRIBUTION) ? (<Distribution data={this.state.processedData.processedResults} />) : null;
+      if (this.state.view === Timeline.VIEWS.DISTRIBUTION) return <Distribution data={this.state.processedData.processedResults} />;
+      else if (this.state.view === Timeline.VIEWS.OVERVIEW) return <Overview data={this.state.processedData.processedResults} />;
     }
     else return "";
   }

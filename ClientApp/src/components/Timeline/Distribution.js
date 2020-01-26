@@ -5,7 +5,19 @@ import { Formatting } from '../../helpers/Formatting';
 export class Distribution extends Component {
 
   render() {
-    return this.props.data ? (this.renderPieCharts()) : <p>This component shows some distributions when data is loaded.</p>
+    return this.props.data ? (this.renderContent()) : <p>This component shows some distributions when data is loaded.</p>
+  }
+
+  renderContent() {
+    return (
+      <div>
+        <h2>Distribution</h2>
+        <p>
+          This view renders your location history by various distributions such as time, distance travelled, and number of visits.
+        </p>
+        {this.renderPieCharts()}
+      </div>
+    );
   }
 
   renderPieCharts() {

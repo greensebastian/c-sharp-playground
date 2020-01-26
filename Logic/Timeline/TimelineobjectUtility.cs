@@ -39,4 +39,10 @@ namespace c_sharp_playground.Logic.Timeline
             Both = 3
         }
     }
+
+    public enum SemanticType
+    {
+        TYPE_HOME = 0,
+        TYPE_WORK = 1
+    }
 }

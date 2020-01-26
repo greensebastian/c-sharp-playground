@@ -12,7 +12,7 @@ namespace c_sharp_playground.Extensions
             return UnderscoreRegex.Replace(text, " ");
         }
 
-        public static string InTitleCase(this string text, bool force = false)
+        public static string ToTitleCase(this string text, bool force = false)
         {
             if (force) text = text.ToLowerInvariant();
             return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);

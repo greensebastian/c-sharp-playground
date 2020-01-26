@@ -81,7 +81,7 @@ namespace c_sharp_playground.Logic.Timeline
 
             foreach (var activitySegment in activitySegmentSet)
             {
-                var name = activitySegment.activityType.WithoutUnderscores().InTitleCase(true);
+                var name = activitySegment.activityType.WithoutUnderscores().ToTitleCase(true);
                 distanceDistribution.Put(activitySegment.activityType, activitySegment.distance, name);
                 countDistribution.Put(activitySegment.activityType, 1, name);
                 timeDistribution.Put(activitySegment.activityType, (int)(activitySegment.duration.endTimestampMs - activitySegment.duration.startTimestampMs), name);
@@ -92,7 +92,12 @@ namespace c_sharp_playground.Logic.Timeline
             results.Add("Count", countDistribution);
             results.Add("Time", timeDistribution);
 
-            foreach(var result in results)
+            // Total distance travelled
+            // Average time spent travelling
+            // Average commute between work and home
+            // Longest distance for one day
+
+            foreach (var result in results)
             {
                 result.Value.PostProcess();
             }
@@ -112,24 +117,72 @@ namespace c_sharp_playground.Logic.Timeline
             // Means of travel by time spent
             var timeDistribution = new ValueSortedSet("ms");
 
+            var homeDistribution = new ValueSortedSet("times");
+            var workDistribution = new ValueSortedSet("times");
+            var daysAtWork = new HashSet<DateTime>();
+
             string key;
             string name;
+            string semanticTypeKey;
             foreach (var placeVisit in placeVisitSet)
             {
+                var startDate = DateTimeOffset.FromUnixTimeMilliseconds(placeVisit.duration.startTimestampMs).UtcDateTime;
+                var endDate = DateTimeOffset.FromUnixTimeMilliseconds(placeVisit.duration.endTimestampMs).UtcDateTime;
                 key = placeVisit.location.placeId;
                 name = placeVisit.location.name;
                 countDistribution.Put(key, 1, name);
                 timeDistribution.Put(key, (ulong)(placeVisit.duration.endTimestampMs - placeVisit.duration.startTimestampMs), name);
+
+                // Figure out the semantic type of the visit, and append to counter
+                semanticTypeKey = placeVisit.location.semanticType;
+                if (semanticTypeKey != null)
+                {
+                    if (Enum.TryParse(semanticTypeKey, true, out SemanticType semanticType)) {
+                        switch (semanticType)
+                        {
+                            case SemanticType.TYPE_WORK:
+                                workDistribution.Put(key, 1, name);
+                                foreach (var date in startDate.DaysToAndIncluding(endDate)) daysAtWork.Add(date);
+                                break;
+                            case SemanticType.TYPE_HOME:
+                                homeDistribution.Put(key, 1, name);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
 
-            var results = new Dictionary<string, ValueSortedSet>();
-            results.Add("Count", countDistribution);
-            results.Add("Time", timeDistribution);
-
-            foreach (var result in results)
+            // Post-process any lists that need it
+            var toProcess = new Dictionary<string, ValueSortedSet>();
+            toProcess.Add("Home", homeDistribution);
+            toProcess.Add("Work", workDistribution);
+            toProcess.Add("Count", countDistribution);
+            toProcess.Add("Time", timeDistribution);
+            foreach (var result in toProcess)
             {
                 result.Value.PostProcess();
             }
+
+            // Most visited
+            // Number of visits in total
+            // "Known locations" home, work etc
+            // Time spent at home/work vs other places
+            // Unique number of places visited
+            // Furthest away from home
+
+            var home = homeDistribution.DataSet.FirstOrDefault();
+            var work = workDistribution.DataSet.FirstOrDefault();
+            var numberOfDaysAtWork = daysAtWork.Count();
+
+            // Set up results to return
+            var results = new Dictionary<string, object>();
+            results.Add("Count", countDistribution);
+            results.Add("Time", timeDistribution);
+            results.Add("Home", home?.Name ?? "");
+            results.Add("Work", work?.Name ?? "");
+            results.Add("DaysAtWork", numberOfDaysAtWork);
 
             return results;
         }
