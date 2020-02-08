@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Playground.Identification\Playground.Identification.csproj" />
+    <ProjectReference Include="..\Playground.Models\Playground.Models.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
