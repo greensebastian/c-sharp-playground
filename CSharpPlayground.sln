@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground", "Playground\Playground.csproj", "{659D8E10-15B9-478B-B9AE-6CE6B88AD8F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Identification", "Playground.Identification\Playground.Identification.csproj", "{242C5F9D-60CF-400B-91D8-E648957C9411}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{659D8E10-15B9-478B-B9AE-6CE6B88AD8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{659D8E10-15B9-478B-B9AE-6CE6B88AD8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{659D8E10-15B9-478B-B9AE-6CE6B88AD8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{659D8E10-15B9-478B-B9AE-6CE6B88AD8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242C5F9D-60CF-400B-91D8-E648957C9411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242C5F9D-60CF-400B-91D8-E648957C9411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242C5F9D-60CF-400B-91D8-E648957C9411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242C5F9D-60CF-400B-91D8-E648957C9411}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2F88428-029C-4082-ADE1-6FE9A1F13A00}
+	EndGlobalSection
+EndGlobal
