@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Playground.Data;
+using Playground.Models.User;
 using Playground.Repository;
 using Playground.Repository.Data;
 
@@ -22,13 +25,28 @@ namespace Playground
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            RepositoryStartup.ConfigureServices(services, Configuration);
-
-            services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", config =>
+            // Identity configuration
+            services.AddIdentity<User, Role>(config =>
             {
-                config.Cookie.Name = "AuthCookie";
+                config.Password.RequiredLength = 3;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+                config.Password.RequiredUniqueChars = 1;
+            })
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<UserService>();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "ApplicationCookie";
+                OverrideCookieLoginAndAccessRedirects(config);
             });
+
+            // Database configuration
+            RepositoryStartup.ConfigureServices(services, Configuration);
 
             services.AddControllersWithViews();
 
@@ -92,6 +110,20 @@ namespace Playground
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
+        }
+
+        private void OverrideCookieLoginAndAccessRedirects(CookieAuthenticationOptions options)
+        {
+            options.Events.OnRedirectToAccessDenied = context =>
+            {
+                context.Response.StatusCode = 403;
+                return Task.CompletedTask;
+            };
+            options.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = 401;
+                return Task.CompletedTask;
+            };
         }
     }
 }
