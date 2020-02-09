@@ -231,6 +231,9 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# Configuration
+appsettings*.json
+
 ### React ###
 .DS_*
 *.log

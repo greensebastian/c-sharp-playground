@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Playground.Data;
+using Playground.Repository;
+using Playground.Repository.Data;
 
 namespace Playground
 {
@@ -19,6 +22,13 @@ namespace Playground
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RepositoryStartup.ConfigureServices(services, Configuration);
+
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+            {
+                config.Cookie.Name = "AuthCookie";
+            });
 
             services.AddControllersWithViews();
 
@@ -54,6 +64,12 @@ namespace Playground
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            // Who are you?
+            app.UseAuthentication();
+
+            // Are you allowed?
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
