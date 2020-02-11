@@ -26,7 +26,7 @@ namespace Playground
         public void ConfigureServices(IServiceCollection services)
         {
             // Identity configuration
-            services.AddIdentity<User, Role>(config =>
+            services.AddIdentity<PlaygroundUser, Role>(config =>
             {
                 config.Password.RequiredLength = 3;
                 config.Password.RequireDigit = false;
@@ -34,7 +34,7 @@ namespace Playground
                 config.Password.RequireUppercase = false;
                 config.Password.RequiredUniqueChars = 1;
             })
-                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddEntityFrameworkStores<PlaygroundDatabaseContext>()
                 .AddDefaultTokenProviders();
 
             services.AddScoped<UserService>();

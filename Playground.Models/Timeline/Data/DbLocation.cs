@@ -11,5 +11,15 @@ namespace Playground.Models.Timeline.Data
         public string Address { get; set; }
         public string Name { get; set; }
         public string PlaceId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DbLocation && obj.GetHashCode() == GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return PlaceId?.GetHashCode() ?? base.GetHashCode();
+        }
     }
 }

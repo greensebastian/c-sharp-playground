@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Playground.Models.Timeline.Data
 {
@@ -8,8 +9,7 @@ namespace Playground.Models.Timeline.Data
     {
         [Key]
         public int Id { get; set; }
-        public virtual TimelineData TimelineData { get; set; }
-        public string Hash { get; set; }
+        public int Hash { get; set; }
         public virtual DbLocationVisit LocationVisit { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
@@ -17,5 +17,17 @@ namespace Playground.Models.Timeline.Data
         public int CenterLatE7 { get; set; }
         public int CenterLngE7 { get; set; }
         public virtual List<DbPlaceVisit> ChildVisits { get; set; }
+
+        public override int GetHashCode()
+        {
+            var dateString = StartDateTime.ToString(CultureInfo.InvariantCulture) + EndDateTime.ToString(CultureInfo.InvariantCulture);
+            return dateString.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var placeVisit = obj as DbPlaceVisit;
+            return placeVisit != null && placeVisit.GetHashCode() == GetHashCode();
+        }
     }
 }

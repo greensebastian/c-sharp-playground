@@ -9,11 +9,13 @@ namespace Playground.Repository
     {
         public static void ConfigureServices(IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<DatabaseContext>(builder =>
+            services.AddDbContext<PlaygroundDatabaseContext>(builder =>
             {
+                builder.UseLazyLoadingProxies();
                 builder.UseSqlServer(config.GetConnectionString("DefaultConnection"), builder => builder.MigrationsAssembly("Playground"));
             });
-            services.AddScoped<TimelineRepository>();
+            services.AddTransient<PlaygroundDatabaseContext>();
+            services.AddTransient<TimelineRepository>();
         }
     }
 }

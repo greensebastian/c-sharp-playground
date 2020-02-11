@@ -9,8 +9,6 @@ namespace Playground.Models.Timeline.Data
     {
         [Key]
         public int Id { get; set; }
-        public virtual DbActivitySegment ActivitySegment { get; set; }
-        public virtual DbPlaceVisit PlaceVisit { get; set; }
         public string SemanticType { get; set; }
         public virtual DbLocation Location { get; set; }
 

@@ -10,10 +10,10 @@ namespace Playground
 {
     public class UserService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private User _currentUser = null;
-        public UserService(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly UserManager<PlaygroundUser> _userManager;
+        private readonly SignInManager<PlaygroundUser> _signInManager;
+        private PlaygroundUser _currentUser = null;
+        public UserService(UserManager<PlaygroundUser> userManager, SignInManager<PlaygroundUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,7 +43,7 @@ namespace Playground
         {
             var salt = CreateSalt();
             var hash = CreateHash(password, salt);
-            var user = new User
+            var user = new PlaygroundUser
             {
                 Id = username,
                 UserName = username,
@@ -73,12 +73,12 @@ namespace Playground
             return success;
         }
 
-        private static bool CorrectPassword(string password, User user)
+        private static bool CorrectPassword(string password, PlaygroundUser user)
         {
             return CreateHash(password, user.PasswordSalt) == user.PasswordHash;
         }
 
-        public async Task<User> CurrentUser()
+        public async Task<PlaygroundUser> CurrentUser()
         {
             if (_currentUser == null)
             {
