@@ -13,6 +13,7 @@ namespace Playground.Repository
             {
                 builder.UseSqlServer(config.GetConnectionString("DefaultConnection"), builder => builder.MigrationsAssembly("Playground"));
             });
+            services.AddScoped<TimelineRepository>();
         }
     }
 }
