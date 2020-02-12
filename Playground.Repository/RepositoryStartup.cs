@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Playground.Repository.Data;
+using Playground.Repository.Timeline;
 
 namespace Playground.Repository
 {

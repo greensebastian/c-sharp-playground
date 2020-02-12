@@ -123,29 +123,6 @@ namespace Playground.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Playground.Models.Timeline.Data.DbActivity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ActivitySegmentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ActivityType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Probability")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActivitySegmentId");
-
-                    b.ToTable("Activities");
-                });
-
             modelBuilder.Entity("Playground.Models.Timeline.Data.DbActivitySegment", b =>
                 {
                     b.Property<int>("Id")
@@ -318,14 +295,7 @@ namespace Playground.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("PlaygroundUserForeignKey")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PlaygroundUserForeignKey")
-                        .IsUnique()
-                        .HasFilter("[PlaygroundUserForeignKey] IS NOT NULL");
 
                     b.ToTable("TimelineData");
                 });
@@ -378,6 +348,9 @@ namespace Playground.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TimelineDataId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -394,6 +367,8 @@ namespace Playground.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TimelineDataId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -476,13 +451,6 @@ namespace Playground.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Playground.Models.Timeline.Data.DbActivity", b =>
-                {
-                    b.HasOne("Playground.Models.Timeline.Data.DbActivitySegment", "ActivitySegment")
-                        .WithMany()
-                        .HasForeignKey("ActivitySegmentId");
-                });
-
             modelBuilder.Entity("Playground.Models.Timeline.Data.DbActivitySegment", b =>
                 {
                     b.HasOne("Playground.Models.Timeline.Data.DbWaypoint", "EndWaypoint")
@@ -531,11 +499,11 @@ namespace Playground.Migrations
                         .HasForeignKey("DbActivitySegmentId");
                 });
 
-            modelBuilder.Entity("Playground.Models.Timeline.Data.TimelineData", b =>
+            modelBuilder.Entity("Playground.Models.User.PlaygroundUser", b =>
                 {
-                    b.HasOne("Playground.Models.User.PlaygroundUser", "PlaygroundUser")
-                        .WithOne("TimelineData")
-                        .HasForeignKey("Playground.Models.Timeline.Data.TimelineData", "PlaygroundUserForeignKey");
+                    b.HasOne("Playground.Models.Timeline.Data.TimelineData", "TimelineData")
+                        .WithMany()
+                        .HasForeignKey("TimelineDataId");
                 });
 #pragma warning restore 612, 618
         }

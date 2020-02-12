@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playground.Models.User;
+using Playground.Repository.Timeline;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,14 +14,21 @@ namespace Playground.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserService _userService;
-        public AuthenticationController(UserService userService)
+        private readonly TimelineRepository _timelineRepository;
+        private readonly string RegistrationKey;
+
+        public AuthenticationController(UserService userService, TimelineRepository timelineRepository, IConfiguration configuration)
         {
             _userService = userService;
+            _timelineRepository = timelineRepository;
+            RegistrationKey = configuration.GetValue<string>("RegistrationKey");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserRequestModel model)
+        public async Task<IActionResult> Register(RegisterUserRequestModel model)
         {
+            if (string.IsNullOrEmpty(model.RegistrationKey) || !model.RegistrationKey.Equals(RegistrationKey, StringComparison.InvariantCulture))
+                return StatusCode((int)HttpStatusCode.Unauthorized, "No valid registration key provided");
             var username = model.Username;
             var password = model.Password;
             bool succeeded;
@@ -84,6 +93,7 @@ namespace Playground.Controllers
                 return StatusCode((int)HttpStatusCode.BadRequest, "Password must be provided when attempting to delete own user");
             try
             {
+                await _timelineRepository.RemoveTimelineData(await _userService.CurrentUser());
                 await _userService.LogoutAndDeleteCurrent(password);
             }
             catch (Exception)

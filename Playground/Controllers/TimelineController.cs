@@ -10,7 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Playground.Logic.Timeline;
 using Playground.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Playground.Repository;
+using Playground.Repository.Timeline;
 
 namespace Playground.Controllers
 {

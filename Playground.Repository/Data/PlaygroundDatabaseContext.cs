@@ -7,7 +7,6 @@ namespace Playground.Repository.Data
 {
     public class PlaygroundDatabaseContext : IdentityDbContext<PlaygroundUser, Role, string>
     {
-        public DbSet<DbActivity> Activities { get; set; }
         public DbSet<DbActivitySegment> ActivitySegments { get; set; }
         public DbSet<DbLocation> Locations { get; set; }
         public DbSet<DbLocationVisit> LocationVisits { get; set; }

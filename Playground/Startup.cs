@@ -37,6 +37,8 @@ namespace Playground
                 .AddEntityFrameworkStores<PlaygroundDatabaseContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddSingleton(Configuration);
+
             services.AddScoped<UserService>();
 
             services.ConfigureApplicationCookie(config =>

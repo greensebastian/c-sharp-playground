@@ -22,32 +22,6 @@ namespace Playground.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    PasswordSalt = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -62,6 +36,18 @@ namespace Playground.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimelineData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimelineData", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,6 +69,39 @@ namespace Playground.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    TimelineDataId = table.Column<int>(nullable: true),
+                    PasswordSalt = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_TimelineData_TimelineDataId",
+                        column: x => x.TimelineDataId,
+                        principalTable: "TimelineData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,40 +187,6 @@ namespace Playground.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TimelineData",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlaygroundUserForeignKey = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimelineData", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TimelineData_AspNetUsers_PlaygroundUserForeignKey",
-                        column: x => x.PlaygroundUserForeignKey,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ActivitySegmentId = table.Column<int>(nullable: true),
-                    ActivityType = table.Column<string>(nullable: true),
-                    Probability = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -319,11 +304,6 @@ namespace Playground.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_ActivitySegmentId",
-                table: "Activities",
-                column: "ActivitySegmentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ActivitySegments_EndWaypointId",
                 table: "ActivitySegments",
                 column: "EndWaypointId");
@@ -378,6 +358,11 @@ namespace Playground.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_TimelineDataId",
+                table: "AspNetUsers",
+                column: "TimelineDataId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LocationVisits_DbActivitySegmentId",
                 table: "LocationVisits",
                 column: "DbActivitySegmentId");
@@ -403,24 +388,9 @@ namespace Playground.Migrations
                 column: "TimelineDataId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimelineData_PlaygroundUserForeignKey",
-                table: "TimelineData",
-                column: "PlaygroundUserForeignKey",
-                unique: true,
-                filter: "[PlaygroundUserForeignKey] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Waypoints_DbActivitySegmentId",
                 table: "Waypoints",
                 column: "DbActivitySegmentId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Activities_ActivitySegments_ActivitySegmentId",
-                table: "Activities",
-                column: "ActivitySegmentId",
-                principalTable: "ActivitySegments",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_LocationVisits_ActivitySegments_DbActivitySegmentId",
@@ -442,11 +412,12 @@ namespace Playground.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Waypoints_ActivitySegments_DbActivitySegmentId",
-                table: "Waypoints");
+                name: "FK_ActivitySegments_Waypoints_EndWaypointId",
+                table: "ActivitySegments");
 
-            migrationBuilder.DropTable(
-                name: "Activities");
+            migrationBuilder.DropForeignKey(
+                name: "FK_ActivitySegments_Waypoints_StartWaypointId",
+                table: "ActivitySegments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -470,22 +441,22 @@ namespace Playground.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "LocationVisits");
 
             migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "ActivitySegments");
-
-            migrationBuilder.DropTable(
                 name: "Waypoints");
 
             migrationBuilder.DropTable(
-                name: "TimelineData");
+                name: "ActivitySegments");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "TimelineData");
         }
     }
 }

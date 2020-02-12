@@ -5,7 +5,7 @@ using Playground.Models.Timeline.Data;
 using System;
 using System.Collections.Concurrent;
 
-namespace Playground.Repository
+namespace Playground.Repository.Timeline
 {
     public class TimelineProcessor
     {
@@ -64,8 +64,8 @@ namespace Playground.Repository
                 StartDateTime = hashableObject.StartDateTime,
                 StartWaypoint = GetWaypoint(segment.startLocation),
                 EndWaypoint = GetWaypoint(segment.endLocation),
-                Waypoints = segment.waypointPath?.waypoints.Select(GetWaypoint).ToList(),
-                TransitLocationVisits = segment.transitPath?.transitStops.Select(GetLocationVisit).ToList()
+                Waypoints = segment.waypointPath?.waypoints.Select(GetWaypoint).ToList() ?? new List<DbWaypoint>(),
+                TransitLocationVisits = segment.transitPath?.transitStops.Select(GetLocationVisit).ToList() ?? new List<DbLocationVisit>()
             };
             return dbSegment;
         }
@@ -92,7 +92,7 @@ namespace Playground.Repository
                 EndDateTime = FromJavascriptMs(visit.duration.endTimestampMs),
                 StartDateTime = FromJavascriptMs(visit.duration.startTimestampMs),
                 LocationVisit = GetLocationVisit(visit.location),
-                ChildVisits = visit.childVisits?.Select(childVisit => MapChildVisit(childVisit)).ToList()
+                ChildVisits = visit.childVisits?.Select(childVisit => MapChildVisit(childVisit)).ToList() ?? new List<DbPlaceVisit>()
             };
             return dbVisit;
         }
