@@ -15,6 +15,7 @@ code {
   color: #fff;
   background-color: #ff5252;
   border-color: #b33939;
+  margin-bottom: 1rem;
 }
 
   #dropdown-basic-button:focus {

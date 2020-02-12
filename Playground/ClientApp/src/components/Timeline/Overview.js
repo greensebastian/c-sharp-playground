@@ -19,10 +19,10 @@ export class Overview extends Component {
   }
 
   renderOverview() {
-    let activitiesByDistance = this.props.data.activitySegmentResults.Distance;
-    let activitiesByTime = this.props.data.activitySegmentResults.Time;
-    let placesByCount = this.props.data.placeVisitResults.Count;
-    let placesByTime = this.props.data.placeVisitResults.Time;
+    //let activitiesByDistance = this.props.data.activitySegmentResults.Distance;
+    //let activitiesByTime = this.props.data.activitySegmentResults.Time;
+    //let placesByCount = this.props.data.placeVisitResults.Count;
+    //let placesByTime = this.props.data.placeVisitResults.Time;
 
     let home = this.props.data.placeVisitResults.Home;
     let work = this.props.data.placeVisitResults.Work;

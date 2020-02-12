@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { PATHS } from '../../resources/Constants';
+import { COLORS } from '../../resources/Colors';
 import { Distribution } from './Distribution';
 import { Overview } from './Overview';
+import { SyncLoader } from "react-spinners";
 
 export class Timeline extends Component {
   static displayName = Timeline.name;
@@ -41,6 +43,11 @@ export class Timeline extends Component {
             <input id="use-demo" type="checkbox" className="mr-2" name="showDemo" onChange={this.onClickDemoUpload} /><label htmlFor="use-demo" className="m-0 p-0">Include demo file</label>
           </div>
           {this.dropdown()}
+          <SyncLoader
+            size={30}
+            color={COLORS.SECONDARY.FIRST}
+            loading={this.state.working}
+          />
           {this.contentSection()}
         </div>
         {}
