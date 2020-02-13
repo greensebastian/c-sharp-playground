@@ -1,0 +1,133 @@
+@import "../../resources/Colors.scss";
+@import "../../custom.scss";
+
+$login-modal-z: 100;
+
+/*
+    Button styling
+*/
+.header-login-button {
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0;
+  padding: 0.5rem;
+  height: 100%;
+  color: white;
+  border: 2px solid #ffffff;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+
+  &:hover {
+    box-shadow: 0px 0px 0px 1px;
+  }
+}
+
+.header-login-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1000;
+}
+
+/*
+    Login layout
+*/
+.login-blackout {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  z-index: $login-modal-z;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+$modal-padding: 1rem;
+
+.login-modal {
+  position: relative;
+  margin: 2rem 1rem;
+  width: 30rem;
+  height: auto;
+  background-color: $PRIMARY_FIRST;
+  border-radius: 1rem;
+  padding: 0;
+  overflow: hidden;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: white;
+    padding: $modal-padding;
+    padding-bottom: $modal-padding / 2;
+
+    p {
+      opacity: 0.9;
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  .action-tabs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    button {
+      @extend .clickable;
+      background-color: $SECONDARY_FIRST_DARK;
+      color: white;
+
+      margin: 0;
+      padding: 0.5rem;
+      height: 100%;
+      font-weight: 600;
+      flex-basis: 0;
+      flex-grow: 1;
+      border: none;
+      font-size: 1.2rem;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .selected {
+      background-color: white;
+      color: $SECONDARY_FIRST_DARK;
+    }
+  }
+
+  form {
+    z-index: $login-modal-z + 5;
+    background-color: white;
+    padding: $modal-padding;
+
+    input {
+      @extend .clickable.dark;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .login-modal-close {
+    color: white;
+    padding: 0.3rem;
+    transition: transform 0.05s;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

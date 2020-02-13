@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { PATHS } from '../../resources/Constants';
+import { COLORS } from '../../resources/Colors';
 import { DelayCard } from './DelayCard';
+import { SyncLoader } from "react-spinners";
 
 export class DelayStatus extends Component {
   static displayName = DelayStatus.name;
@@ -35,6 +37,11 @@ export class DelayStatus extends Component {
       <div>
         <h2 id="tabelLabel" >Delay information</h2>
         <p>This component retrieves and displays real time delay data.</p>
+        <SyncLoader
+          size={30}
+          color={COLORS.SECONDARY.FIRST_DARK}
+          loading={this.state.loading}
+        />
         {contents}
       </div>
     );

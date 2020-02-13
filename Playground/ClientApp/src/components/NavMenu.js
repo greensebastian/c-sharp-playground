@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import HeaderLogin from './Login/HeaderLogin';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -11,7 +12,8 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      collapsed: true,
+      showLogin: false
     };
   }
 
@@ -21,12 +23,19 @@ export class NavMenu extends Component {
     });
   }
 
+  showLogin() {
+    this.setState({
+      showLogin: true
+    });
+  }
+
   render() {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 color-primary-background" dark>
           <Container>
-            <NavbarBrand tag={Link} to="/">c_sharp_playground</NavbarBrand>
+            <NavbarBrand tag={Link} to="/">C Sharp Playground</NavbarBrand>
+            <HeaderLogin onClick={this.showLogin} />
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">

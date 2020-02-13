@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { PATHS } from '../../resources/Constants';
+import { COLORS } from '../../resources/Colors';
+import { SyncLoader } from "react-spinners";
 
 export class StationInfo extends Component {
   static displayName = StationInfo.name;
@@ -49,6 +51,11 @@ export class StationInfo extends Component {
       <div>
         <h2 id="tabelLabel" >Station information</h2>
         <p>This component shows public transportation leaving from Lund C.</p>
+        <SyncLoader
+          size={30}
+          color={COLORS.SECONDARY.FIRST_DARK}
+          loading={this.state.loading}
+        />
         {contents}
       </div>
     );
