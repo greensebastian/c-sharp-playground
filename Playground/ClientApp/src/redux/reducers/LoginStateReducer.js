@@ -4,7 +4,10 @@ import ACTION_TYPES from '../actions/ActionTypes';
 const initialLoginState = {
   loggedIn: false,
   showModal: false,
-  username: ""
+  username: "",
+  email: "",
+  activitySegmentCount: 0,
+  placeVisitCount: 0
 };
 
 // REDUCER

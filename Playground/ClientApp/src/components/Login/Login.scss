@@ -109,6 +109,10 @@ $modal-padding: 1rem;
 
     input {
       @extend .clickable.dark;
+
+      .is-invalid {
+        border: 1px solid red;
+      }
     }
 
     button {

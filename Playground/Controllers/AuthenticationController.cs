@@ -26,8 +26,9 @@ namespace Playground.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterUserRequestModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterUserRequestModel model, [FromBody]RegisterUserRequestModel bodyModel)
         {
+            if (IsInvalid(model)) model = bodyModel;
             if (IsInvalid(model)) return StatusCode((int)HttpStatusCode.BadRequest);
             if (string.IsNullOrEmpty(model.RegistrationKey) || !model.RegistrationKey.Equals(RegistrationKey, StringComparison.InvariantCulture))
                 return StatusCode((int)HttpStatusCode.Unauthorized, "No valid registration key provided");
@@ -46,8 +47,9 @@ namespace Playground.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(UserRequestModel model)
+        public async Task<IActionResult> Login([FromForm]UserRequestModel model, [FromBody]UserRequestModel bodyModel)
         {
+            if (IsInvalid(model)) model = bodyModel;
             if (IsInvalid(model)) return StatusCode((int)HttpStatusCode.BadRequest);
             var username = model.Username;
             var password = model.Password;
