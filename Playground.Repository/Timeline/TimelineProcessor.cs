@@ -43,6 +43,7 @@ namespace Playground.Repository.Timeline
 
         private DbActivitySegment GetActivitySegment(Activitysegment segment)
         {
+            // Create minimum object required for a hash
             var hashableObject = new DbActivitySegment
             {
                 StartDateTime = FromJavascriptMs(segment.duration.startTimestampMs),
@@ -72,8 +73,10 @@ namespace Playground.Repository.Timeline
 
         private DbPlaceVisit GetPlaceVisit(Placevisit visit)
         {
+            // Create minimum object required for a hash
             var hashableObject = new DbPlaceVisit
             {
+                LocationVisit = new DbLocationVisit { Location = new DbLocation { PlaceId = visit.location.placeId } },
                 StartDateTime = FromJavascriptMs(visit.duration.startTimestampMs),
                 EndDateTime = FromJavascriptMs(visit.duration.endTimestampMs)
             };
@@ -92,7 +95,7 @@ namespace Playground.Repository.Timeline
                 EndDateTime = FromJavascriptMs(visit.duration.endTimestampMs),
                 StartDateTime = FromJavascriptMs(visit.duration.startTimestampMs),
                 LocationVisit = GetLocationVisit(visit.location),
-                ChildVisits = visit.childVisits?.Select(childVisit => MapChildVisit(childVisit)).ToList() ?? new List<DbPlaceVisit>()
+                ChildVisits = visit.childVisits?.Select(childVisit => MapChildVisit(childVisit, visit.duration.startTimestampMs, visit.duration.endTimestampMs)).ToList() ?? new List<DbPlaceVisit>()
             };
             return dbVisit;
         }
@@ -183,15 +186,15 @@ namespace Playground.Repository.Timeline
             return point;
         }
 
-        private DbPlaceVisit MapChildVisit(Childvisit visit)
+        private DbPlaceVisit MapChildVisit(Childvisit visit, long fallbackStartTime, long fallbackEndTime)
         {
             var dbVisit = new DbPlaceVisit
             {
                 CenterLatE7 = visit.centerLatE7,
                 CenterLngE7 = visit.centerLngE7,
                 Confidence = visit.placeConfidence,
-                EndDateTime = FromJavascriptMs(visit.duration.endTimestampMs),
-                StartDateTime = FromJavascriptMs(visit.duration.startTimestampMs),
+                EndDateTime = FromJavascriptMs(visit.duration?.endTimestampMs ?? fallbackEndTime),
+                StartDateTime = FromJavascriptMs(visit.duration?.startTimestampMs ?? fallbackStartTime),
                 LocationVisit = GetLocationVisit(visit.location)
             };
             return dbVisit;

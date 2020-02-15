@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playground.Models.User;
 using Playground.Repository.Timeline;
+using Playground.Models.Dto;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,36 +28,41 @@ namespace Playground.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserRequestModel model)
         {
+            if (IsInvalid(model)) return StatusCode((int)HttpStatusCode.BadRequest);
             if (string.IsNullOrEmpty(model.RegistrationKey) || !model.RegistrationKey.Equals(RegistrationKey, StringComparison.InvariantCulture))
                 return StatusCode((int)HttpStatusCode.Unauthorized, "No valid registration key provided");
-            var username = model.Username;
-            var password = model.Password;
-            bool succeeded;
-            try
-            {
-                succeeded = await _userService.Register(username, password);
-            }catch (Exception)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
-            return succeeded ? StatusCode((int)HttpStatusCode.OK) : StatusCode((int)HttpStatusCode.BadRequest);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(UserRequestModel model)
-        {
-            var username = model.Username;
-            var password = model.Password;
-            bool succeeded;
             try
             {
-                succeeded = await _userService.Login(username, password);
+                var (result, user) = await _userService.Register(model.Username, model.Password, model.Email, model.SignIn);
+                var response = new RegisterUserResponseModel(user);
+                if (result.Succeeded) return StatusCode((int)HttpStatusCode.OK, response);
+                else return StatusCode((int)HttpStatusCode.BadRequest);
             }
             catch (Exception)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
-            return succeeded ? StatusCode((int)HttpStatusCode.OK) : StatusCode((int)HttpStatusCode.Unauthorized);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserRequestModel model)
+        {
+            if (IsInvalid(model)) return StatusCode((int)HttpStatusCode.BadRequest);
+            var username = model.Username;
+            var password = model.Password;
+
+            try
+            {
+                var user = await _userService.Login(username, password);
+                var response = new UserResponseModel(user);
+                if (user != null) return StatusCode((int)HttpStatusCode.OK, response);
+                else return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
@@ -80,7 +86,7 @@ namespace Playground.Controllers
         public async Task<IActionResult> GetMe()
         {
             var user = await _userService.CurrentUser();
-            return StatusCode((int)HttpStatusCode.OK, $"Logged in as: {user.UserName}");
+            return StatusCode((int)HttpStatusCode.OK, new UserResponseModel(user));
         }
 
         // Remove currently logged in user
@@ -109,6 +115,11 @@ namespace Playground.Controllers
         {
             var user = await _userService.CurrentUser();
             return StatusCode((int)HttpStatusCode.OK, $"Authorized successfully as: {user.UserName}");
+        }
+
+        private bool IsInvalid(UserRequestModel model)
+        {
+            return model == null || string.IsNullOrEmpty(model.Username);
         }
     }
 }

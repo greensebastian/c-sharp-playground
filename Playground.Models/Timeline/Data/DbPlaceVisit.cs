@@ -20,7 +20,7 @@ namespace Playground.Models.Timeline.Data
 
         public override int GetHashCode()
         {
-            var dateString = StartDateTime.ToString(CultureInfo.InvariantCulture) + EndDateTime.ToString(CultureInfo.InvariantCulture);
+            var dateString = LocationVisit.Location.PlaceId + StartDateTime.ToString(CultureInfo.InvariantCulture) + EndDateTime.ToString(CultureInfo.InvariantCulture);
             return dateString.GetHashCode();
         }
 

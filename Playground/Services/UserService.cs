@@ -19,7 +19,7 @@ namespace Playground
             _signInManager = signInManager;
         }
 
-        public async Task<bool> Login(string username, string password)
+        public async Task<PlaygroundUser> Login(string username, string password)
         {
             return await SignIn(username, password);
         }
@@ -39,7 +39,7 @@ namespace Playground
             }
         }
 
-        public async Task<bool> Register(string username, string password)
+        public async Task<(IdentityResult, PlaygroundUser)> Register(string username, string password, string email, bool signIn)
         {
             var salt = CreateSalt();
             var hash = CreateHash(password, salt);
@@ -48,18 +48,19 @@ namespace Playground
                 Id = username,
                 UserName = username,
                 PasswordSalt = salt,
-                PasswordHash = hash
+                PasswordHash = hash,
+                Email = email
             };
 
             var result = await _userManager.CreateAsync(user);
-            if (!result.Succeeded) return false;
+            if (!result.Succeeded) return (result, null);
 
-            return await SignIn(username, password);
+            if (signIn) await SignIn(username, password);
+            return (result, user);
         }
 
-        private async Task<bool> SignIn(string username, string password)
+        private async Task<PlaygroundUser> SignIn(string username, string password)
         {
-            bool success = false;
             var user = await _userManager.FindByNameAsync(username);
             if (user != null)
             {
@@ -67,10 +68,9 @@ namespace Playground
                 {
                     await _signInManager.SignInAsync(user, true);
                     _currentUser = user;
-                    success = true;
                 }
             }
-            return success;
+            return _currentUser;
         }
 
         private static bool CorrectPassword(string password, PlaygroundUser user)

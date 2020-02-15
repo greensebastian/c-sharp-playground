@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground.Models", "Playgr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playground.Repository", "Playground.Repository\Playground.Repository.csproj", "{821C8FD2-07C6-4E98-A3BC-E5F00F4583FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.Models.Dto", "Playground.Models.Dto\Playground.Models.Dto.csproj", "{70ABD79C-D6C5-4C80-8C47-2800876C2C48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{821C8FD2-07C6-4E98-A3BC-E5F00F4583FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{821C8FD2-07C6-4E98-A3BC-E5F00F4583FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{821C8FD2-07C6-4E98-A3BC-E5F00F4583FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70ABD79C-D6C5-4C80-8C47-2800876C2C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70ABD79C-D6C5-4C80-8C47-2800876C2C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70ABD79C-D6C5-4C80-8C47-2800876C2C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70ABD79C-D6C5-4C80-8C47-2800876C2C48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

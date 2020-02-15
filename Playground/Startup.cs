@@ -33,6 +33,7 @@ namespace Playground
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
                 config.Password.RequiredUniqueChars = 1;
+                config.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<PlaygroundDatabaseContext>()
                 .AddDefaultTokenProviders();
