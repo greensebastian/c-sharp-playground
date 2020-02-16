@@ -73,6 +73,11 @@ namespace Playground
             return _currentUser;
         }
 
+        public async Task<bool> CorrectPassword(string password)
+        {
+            return CorrectPassword(password, await CurrentUser());
+        }
+
         private static bool CorrectPassword(string password, PlaygroundUser user)
         {
             return CreateHash(password, user.PasswordSalt) == user.PasswordHash;

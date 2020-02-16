@@ -1,14 +1,9 @@
 import ACTION_TYPES from '../actions/ActionTypes';
+import { getLoginState } from '../../components/Login/LoginHandler';
 
 // INITIAL STATE
-const initialLoginState = {
-  loggedIn: false,
-  showModal: false,
-  username: "",
-  email: "",
-  activitySegmentCount: 0,
-  placeVisitCount: 0
-};
+const initialLoginState = getLoginState();
+initialLoginState.showModal = false;
 
 // REDUCER
 const loginReducer = (state = initialLoginState, action) => {

@@ -95,12 +95,16 @@ namespace Playground.Controllers
         [HttpDelete]
         [ActionName("Me")]
         [Authorize]
-        public async Task<IActionResult> DeleteMe(string password)
+        public async Task<IActionResult> DeleteMe([FromForm]UserRequestModel model, [FromBody]UserRequestModel bodyModel)
         {
+            string password = model?.Password;
+            if (string.IsNullOrEmpty(password)) password = bodyModel?.Password;
             if (string.IsNullOrEmpty(password))
                 return StatusCode((int)HttpStatusCode.BadRequest, "Password must be provided when attempting to delete own user");
             try
             {
+                if (!await _userService.CorrectPassword(password))
+                    return StatusCode((int)HttpStatusCode.Unauthorized, "Password does not match current user");
                 await _timelineRepository.RemoveTimelineData(await _userService.CurrentUser());
                 await _userService.LogoutAndDeleteCurrent(password);
             }

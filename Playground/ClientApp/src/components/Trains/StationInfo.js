@@ -28,8 +28,8 @@ export class StationInfo extends Component {
           </tr>
         </thead>
         <tbody>
-          {stations.map(station =>
-            <tr key={station.no}>
+          {stations.map((station, index) =>
+            <tr key={index}>
               <td>{station.name}</td>
               <td>{station.lineTypeName}</td>
               <td>{station.towards}</td>

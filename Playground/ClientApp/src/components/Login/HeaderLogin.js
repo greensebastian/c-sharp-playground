@@ -7,13 +7,13 @@ class HeaderLoginComponent extends Component {
   render() {
     return (
       <div className="header-login-wrapper">
-        {this.props.loggedIn ? <p>{this.props.username}</p> : this.button()}
+        {this.props.loggedIn ? this.button("Logged in as: " + this.props.username) : this.button("Log in | Register")}
       </div>
     );
   }
 
-  button() {
-    return (<button onClick={() => this.props.dispatch(actions.loginShowModalUpdate(true))} className="header-login-button">Log in | Register</button>);
+  button(text) {
+    return (<button onClick={() => this.props.dispatch(actions.loginShowModalUpdate(true))} className="header-login-button">{text}</button>);
   }
 }
 

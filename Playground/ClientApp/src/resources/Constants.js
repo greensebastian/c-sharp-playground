@@ -4,5 +4,6 @@ export const PATHS = {
   TIMELINE_POST: 'api/timeline/post',
   ME: 'api/authentication/me',
   LOGIN: 'api/authentication/login',
+  LOGOUT: 'api/authentication/logout',
   REGISTER: 'api/authentication/register'
 }

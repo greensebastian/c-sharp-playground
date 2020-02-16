@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Input, Label } from "reactstrap";
+import { Form, FormGroup, Input, Label, FormFeedback, FormText } from "reactstrap";
 import { connect } from "react-redux";
 import { SyncLoader } from "react-spinners";
 import actions from "../../../redux/actions";
 import { COLORS } from "../../../resources/Colors";
-import { PATHS } from "../../../resources/Constants";
+import { postRegister, getLoginState } from "../LoginHandler";
 import "../Login.scss";
 
 class RegisterTabComponent extends Component {
@@ -12,12 +12,13 @@ class RegisterTabComponent extends Component {
     super(props);
     this.state = {
       loading: false,
+      submitEnabled: true,
       username: "",
       email: "",
       password: "",
       repassword: "",
       registrationKey: "",
-      serviceResponse: ""
+      buttonMessage: ""
     };
   }
 
@@ -35,6 +36,7 @@ class RegisterTabComponent extends Component {
   }
 
   render() {
+    if (!this.props.show) return "";
     return (
       <Form>
         <FormGroup>
@@ -44,10 +46,12 @@ class RegisterTabComponent extends Component {
             name="username"
             id="username"
             placeholder="Username"
+            autoComplete="username"
             value={this.state.username}
             invalid={!validUsername(this.state.username)}
             onChange={e => this.setState({ username: e.target.value })}
           />
+          <FormFeedback>Username cannot be empty</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label for="email">Email</Label>
@@ -56,10 +60,12 @@ class RegisterTabComponent extends Component {
             name="email"
             id="email"
             placeholder="user@example.com"
+            autoComplete="email"
             value={this.state.email}
             invalid={!validEmail(this.state.email)}
             onChange={e => this.setState({ email: e.target.value })}
           />
+          <FormFeedback>An email must contain at least one @ sign</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label for="password">Password</Label>
@@ -68,10 +74,12 @@ class RegisterTabComponent extends Component {
             name="password"
             id="password"
             placeholder="Password"
+            autoComplete="new-password"
             value={this.state.password}
             invalid={!validPassword(this.state.password)}
             onChange={e => this.setState({ password: e.target.value })}
           />
+          <FormFeedback>The password must contain at least 4 characters</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label for="retype-password">Enter Password Again</Label>
@@ -80,12 +88,14 @@ class RegisterTabComponent extends Component {
             name="retype-password"
             id="retype-password"
             placeholder="Password"
+            autoComplete="new-password"
             value={this.state.repassword}
             invalid={
               !passwordsEqual(this.state.password, this.state.repassword)
             }
             onChange={e => this.setState({ repassword: e.target.value })}
           />
+          <FormFeedback>The passwords must match</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label for="registrationKey">Registration Key</Label>
@@ -94,57 +104,53 @@ class RegisterTabComponent extends Component {
             name="registrationKey"
             id="registrationKey"
             placeholder="Registration Key"
+            autoComplete="nope"
             value={this.state.registrationKey}
             onChange={e => this.setState({ registrationKey: e.target.value })}
           />
+          <FormText>You need a key to register, contact me if you want to register!</FormText>
         </FormGroup>
         <span className="form-submit">
-          <button onClick={this.handleRegister.bind(this)}>Register</button>
+          <button enabled={this.state.submitEnabled.toString()} onClick={this.handleSubmit.bind(this)}>Register</button>
           <SyncLoader
             size={15}
             color={COLORS.SECONDARY.FIRST_DARK}
             loading={this.state.loading}
           />
-          <p>{this.state.serviceResponse.username}</p>
+          <p>{this.state.buttonMessage}</p>
         </span>
       </Form>
     );
   }
 
-  async handleRegister(event) {
+  async handleSubmit(event){
     event.preventDefault();
-    let url = PATHS.REGISTER;
+    if (!this.state.submitEnabled) return;
     let data = this.jsonData();
-    this.setState({ loading: true });
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
-        body: data
-      });
-      let json = await response.json();
-      this.updateLoginState(json);
-    } catch (ex) {
-      this.setState({ serviceResponse: "An error occured" });
-    } finally {
-      this.setState({ loading: false });
+    this.setState({loading: true, submitEnabled: false});
+    let response = await postRegister(data);
+    this.setState({loading: false, submitEnabled: true});
+    if (response.statusCode){
+      switch(response.statusCode){
+        case 200:
+          this.setState({buttonMessage: "Success! Logged in as " + response.username});
+          this.updateLoginState(response);
+          break;
+        case 400:
+          this.setState({buttonMessage: "Error! Registration details are not valid"});
+          break;
+        default:
+          this.setState({buttonMessage: "Error! An unexpected error occured"});
+          break;
+      }
+    }
+    else {
+      this.setState({buttonMessage: "Error! An unexpected error occured"});
     }
   }
 
   updateLoginState(serviceResponse){
-    this.setState({ serviceResponse });
-    const loginState = this.props.loginState;
-    loginState.loggedIn= true;
-    loginState.showModal = false;
-    loginState.username = serviceResponse.username;
-    loginState.email = serviceResponse.email;
+    const loginState = getLoginState(serviceResponse);
     this.props.dispatch(actions.loginStateUpdate(loginState));
   }
 }

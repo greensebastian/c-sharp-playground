@@ -52,7 +52,7 @@ $modal-padding: 1rem;
 .login-modal {
   position: relative;
   margin: 2rem 1rem;
-  width: 30rem;
+  width: 35rem;
   height: auto;
   background-color: $PRIMARY_FIRST;
   border-radius: 1rem;
@@ -94,6 +94,10 @@ $modal-padding: 1rem;
       font-size: 1.2rem;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+
+      &:active{
+        border: none;
+      }
     }
 
     .selected {
@@ -102,7 +106,17 @@ $modal-padding: 1rem;
     }
   }
 
-  form {
+  table {
+    width: 100%;
+    margin-bottom: 0;
+    border-bottom: 1px solid #dee2e6;
+
+    td:first-child, th:first-child {
+      padding-left: $modal-padding;
+    }
+  }
+
+  form, table {
     z-index: $login-modal-z + 5;
     background-color: white;
     padding: $modal-padding;
@@ -114,11 +128,39 @@ $modal-padding: 1rem;
         border: 1px solid red;
       }
     }
+  }
+
+  button {
+    font-size: 1.2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .profile-actions {
+    width: 100%;
+    background-color: white;
+    padding: 0 $modal-padding;
+    padding-top: $modal-padding;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     button {
+      margin-bottom: $modal-padding;
+
+      &:last-of-type {
+        background-color: white;
+        color: $SECONDARY_FIRST_DARK;
+        font-weight: 400;
+        border: 1px solid $SECONDARY_FIRST_DARK;
+      }
+    }
+
+    p.warning {
+      color: $SECONDARY_FIRST;
+      font-weight: 700;
       font-size: 1.2rem;
-      padding-left: 2rem;
-      padding-right: 2rem;
     }
   }
 
